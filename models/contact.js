@@ -27,11 +27,13 @@ const Contact = model("contact", contactSchema);
 
 const createContactSchema = Joi.object({
   name: Joi.string().required().messages({
-    'any.required': 'Set name for contact',
-    'string.empty': 'Set name for contact'
+    "any.required": "Set name for contact",
+    "string.empty": "Set name for contact",
   }),
-  email: Joi.string().email(),
-  phone: Joi.string().pattern(/^[\d() -]+$/),
+  email: Joi.string().email().required(),
+  phone: Joi.string()
+    .pattern(/^[\d() -]+$/)
+    .required(),
   favorite: Joi.boolean(),
 });
 
