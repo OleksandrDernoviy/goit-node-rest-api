@@ -1,11 +1,28 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-
 const contactsRouter = require("./routes/contactsRouter.js");
+require("dotenv").config();
+
+const mongoose = require("mongoose");
+
+mongoose.set("strictQuery", true);
+
+const { DB_HOST } = process.env;
+
+console.log(process.env);
+
+mongoose
+  .connect(DB_HOST)
+  .then(() => {
+    console.log("Database connection successful");
+  })
+  .catch((error) => {
+    console.log(error.message);
+    process.exit(1);
+  });
 
 const app = express();
-
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
