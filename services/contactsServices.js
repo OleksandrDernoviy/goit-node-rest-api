@@ -1,6 +1,6 @@
 const { Contact } = require("../models/contact");
 
-const listContacts = () => Contact.find();
+const listContacts = (owner) => Contact.find(owner);
 
 const getContactById = async (id) => Contact.findById(id);
 
