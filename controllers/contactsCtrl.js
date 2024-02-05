@@ -5,7 +5,6 @@ const { Contact } = require("../models/contact.js");
 
 const getAllContacts = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = 20 } = req.query;
   const contacts = await contactsService
     .listContacts({ owner })
     .populate("owner", "email subscription");
