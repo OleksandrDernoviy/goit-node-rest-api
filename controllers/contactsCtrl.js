@@ -3,14 +3,14 @@ const contactsService = require("../services/contactsServices");
 const { HttpError, ctrlWrapper } = require("../helpers/index");
 const { Contact } = require("../models/contact");
 
-const getAllContacts = async (req, res, next) => {
+const getAllContacts = async (req, res) => {
     const { _id: owner } = req.user;
     const contacts = await contactsService.listContacts(owner);
     res.json(contacts);
 
 };
 
-const getContactById = async (req, res, next) => {  
+const getContactById = async (req, res) => {
     const { id } = req.params;
     const { _id: owner } = req.user;
     const contact = await contactsService.getContactById(id, owner);
@@ -20,7 +20,9 @@ const getContactById = async (req, res, next) => {
     res.json(contact);
 };
 
-const deleteContact = async (req, res, next) => {
+
+
+const deleteContact = async (req, res) => {
     const { id } = req.params;
     const { _id: owner } = req.user;
     const result = await contactsService.removeContact(id, owner);
@@ -31,14 +33,14 @@ const deleteContact = async (req, res, next) => {
   
 };
 
-const createContact = async (req, res, next) => { 
+const createContact = async (req, res) => { 
     const { _id: owner } = req.user;
     const newContact = await contactsService.addContact(req.body, owner);
     res.status(201).json(newContact);
  
 };
 
-const updateContact = async (req, res, next) => { 
+const updateContact = async (req, res) => { 
     const { id } = req.params;
     const { _id: owner } = req.user;
     const result = await contactsService.updateContact(id, req.body, owner);
@@ -49,7 +51,7 @@ const updateContact = async (req, res, next) => {
  
 };
 
-const updateStatusContact = async (req, res, next) => {
+const updateStatusContact = async (req, res) => {
     const { id } = req.params;
     const { _id: owner } = req.user;
     const result = await contactsService.updateStatusContact(id, req.body, owner);
