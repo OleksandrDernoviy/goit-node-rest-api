@@ -1,32 +1,34 @@
-const { Contact } = require("../models/contact");
 
-const listContacts = (owner) => Contact.find(owner);
+const { Contact } = require("../models/contact.js");
 
-const getContactById = async (id) => Contact.findById(id);
-
-const removeContact = async (contactId) => {
-  const deleteContact = await Contact.findByIdAndDelete(contactId);
-  return deleteContact;
+const listContacts = async (owner) => {
+  return await Contact.find({ owner }).populate("owner", "email subscription");
 };
 
-const addContact = async (data) => {
-  const newContact = await Contact.create(data);
-  return newContact;
+const getContactById = async (id, owner) => {
+  return await Contact.findOne({ _id: id, owner });
 };
 
-const updateContact = async (id, data) => {
-  const upContact = await Contact.findByIdAndUpdate(id, data, {
+const removeContact = async (id, owner) => {
+  return await Contact.findOneAndDelete({ _id: id, owner });
+};
+
+const addContact = async (data, owner) => {
+  return await Contact.create({ ...data, owner });
+};
+
+const updateContact = async (id, data, owner) => {
+  return await Contact.findOneAndUpdate({ _id: id, owner }, data, {
     new: true,
   });
-  return upContact;
-  
 };
 
-const updateStatusContact = async (id, data) => {
-  const upStatContact = await Contact.findByIdAndUpdate(id, data, {
-    new: true,
-  });
-  return upStatContact;
+const updateStatusContact = async (id, status, owner) => {
+  return await Contact.findOneAndUpdate(
+    { _id: id, owner },
+    { status },
+    { new: true }
+  );
 };
 
 module.exports = {
@@ -37,3 +39,5 @@ module.exports = {
   updateContact,
   updateStatusContact,
 };
+
+
