@@ -20,9 +20,9 @@ const userSchema = new Schema(
       default: "starter",
     },
     token: String,
-    
+    avatarUrl: String,
   },
-  { versionKey: false }
+  { versionKey: false },
 );
 
 userSchema.post("save", handleMongooseError)
