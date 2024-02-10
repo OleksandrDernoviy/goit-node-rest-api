@@ -20,7 +20,6 @@ const register = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
     const avatarUrl = gravatar.url(email);
-
     const newUser = await User.create({ ...req.body, password: hashPassword, avatarUrl });
     res.status(201).json({
         user: {
@@ -76,10 +75,10 @@ const updateAvatar = async (req, res) => {
     const { path: tmpUpload, originalname } = req.file;
     const filename = `${_id}_${originalname}`
     const pathUpload = path.join(avatarDir, filename);
-    // await fs.rename(tmpUpload, pathUpload);
 
     const image = await jimp.read(tmpUpload);
-    await image.resize(250, 250).write(pathUpload);
+    await image.resize(250, 250).writeAsync(pathUpload);
+    await fs.unlink(tmpUpload);
 
     const avatarUrl = path.join("avatars", filename);
     await User.findByIdAndUpdate(_id, { avatarUrl });
@@ -95,3 +94,5 @@ module.exports = {
   logout: ctrlWrapper(logout),
   updateAvatar: ctrlWrapper(updateAvatar),
 };
+
+
